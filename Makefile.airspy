@@ -1,0 +1,15 @@
+
+CFLAGS= -g -pthread -D WITH_AIRSPY -I.  `pkg-config --cflags libairspy`
+LIBS= -g -lm -pthread  `pkg-config --libs libairspy` -lusb-1.0 
+
+CC=gcc
+
+all: vortrack
+
+vortrack: airspy.o vortrack.o
+	$(CC) -o vortrack airspy.o vortrack.o $(LIBS) $(LDFLAGS)
+
+vortrack.o: vortrack.c vortrack.h
+
+clean:
+	rm -f *.o vortrack

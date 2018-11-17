@@ -1,0 +1,11 @@
+CFLAGS=-Ofast -W -D WITH_RTL  -I /usr/local/include/librtlsdr
+LIBS=  -lusb-1.0 -lpthread -L /usr/local/lib -lrtlsdr -lm -lrt 
+
+
+all: vortrack
+
+vortrack: rtl.o vortrack.o 
+	$(CC) -o vortrack rtl.o vortrack.o $(LIBS) $(LDFLAGS) 
+
+clean:
+	rm -f *.o vortrack
