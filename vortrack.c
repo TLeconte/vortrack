@@ -173,14 +173,14 @@ void demod(complex float V)
 	sig30=cexp(phase*-I)*F;
 	sig30=filterlow(sig30,&flt_s);
 
-	A=carg(sig30*conj(ref30));
+	A=carg(sig30*conj(ref30))+M_PI*30.0/50000.0;
 
 	sum+=A;
 	n++;
 	if(n>interval*FSINT) {
 		double avg=180.0/M_PI*sum/n;
 		if(avg<0) avg+=360.0;
-		printf("%3.0f\n",avg);
+		printf("%5.1f\n",avg);
 		n=0;sum=0;
 	}
 }	
