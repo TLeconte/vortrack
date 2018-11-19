@@ -37,8 +37,14 @@ static void usage(void)
 {
 	fprintf(stderr,
 		"vor receiver Copyright (c) 2018 Thierry Leconte \n\n");
+#if WITH_RTL
 	fprintf(stderr,
 		"Usage: vortrack [-g gain] [-l interval ] [-p ppm] [-r device] frequency (in Mhz\n");
+#endif
+#if WITH_AIRSPY
+	fprintf(stderr,
+		"Usage: vortrack [-g gain] [-l interval ] frequency (in Mhz\n");
+#endif
 	fprintf(stderr, "\n\n");
 	fprintf(stderr, " -g gain :\t\t\tgain in tenth of db (ie : 500 = 50 db)\n");
 	fprintf(stderr, " -l interval :\t\t\ttime between two measurements\n");
