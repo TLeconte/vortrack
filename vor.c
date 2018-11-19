@@ -69,7 +69,7 @@ void vor(float S)
 	sig30=cexp(phase*-I)*F;
 	sig30=filterlow(sig30,&flt_s);
 
-	A=carg(sig30*conj(ref30));
+	A=carg(sig30*conj(ref30))+26*2.0*M_PI*30/FSINT;
 	if(n) {
 		if((A-pA)>M_PI) uw-=2.0*M_PI;
 		if((A-pA)<-M_PI) uw+=2.0*M_PI;
