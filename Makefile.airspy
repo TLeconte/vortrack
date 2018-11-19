@@ -6,8 +6,11 @@ CC=gcc
 
 all: vortrack
 
-vortrack: airspy.o vortrack.o
-	$(CC) -o vortrack airspy.o vortrack.o $(LIBS) $(LDFLAGS)
+vortrack: airspy.o vor.o vortrack.o
+	$(CC) -o vortrack airspy.o vor.o vortrack.o $(LIBS) $(LDFLAGS)
+
+test:	vor.o test.o
+	$(CC) -o test vor.o test.o $(LIBS) $(LDFLAGS)
 
 vortrack.o: vortrack.c vortrack.h
 

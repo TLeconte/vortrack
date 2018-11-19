@@ -4,8 +4,11 @@ LIBS=  -lusb-1.0 -lpthread -L /usr/local/lib -lrtlsdr -lm -lrt
 
 all: vortrack
 
-vortrack: rtl.o vortrack.o 
-	$(CC) -o vortrack rtl.o vortrack.o $(LIBS) $(LDFLAGS) 
+vortrack: rtl.o vor.o vortrack.o
+	$(CC) -o vortrack rtl.o vor.o vortrack.o $(LIBS) $(LDFLAGS)
+
+test:	vor.o test.o
+	$(CC) -o test vor.o test.o $(LIBS) $(LDFLAGS)
 
 clean:
 	rm -f *.o vortrack
