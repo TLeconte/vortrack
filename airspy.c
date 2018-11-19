@@ -13,7 +13,7 @@
 extern int verbose;
 extern int gain;
 
-extern void demod(complex float V);
+extern void vor(float V);
 
 static struct airspy_device *device = NULL;
 
@@ -39,7 +39,7 @@ static int rx_callback(airspy_transfer_t * transfer)
                 idx++;
 
                 if (idx == DOWNSC) {
-                        demod(D / (float)DOWNSC / 2048.0);
+                        vor(cabs(D) / (float)DOWNSC / 2048.0);
                         idx = 0;
                         D = 0;
                 }
