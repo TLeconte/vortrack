@@ -16,7 +16,7 @@
 
 int verbose = 0;
 int gain = 1000;
-int interval=1;
+int interval=2;
 int freq ;
 
 #if (WITH_RTL)
