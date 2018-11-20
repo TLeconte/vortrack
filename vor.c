@@ -47,7 +47,7 @@ void vor(float S)
 	static filterstate_t flt_f;
 	static double phase=0,sum=0,pA,uw=0;
 	static complex double fpr;
-	static int n=0;
+	static int n=-FSINT/10;
 
 	double A,fp,F;
 	complex double ref30,fmcar,sig30;
@@ -70,13 +70,13 @@ void vor(float S)
 	sig30=filterlow(sig30,&flt_s);
 
 	A=carg(sig30*conj(ref30))+26*2.0*M_PI*30/FSINT;
-	if(n) {
+	if(n>0) {
 		if((A-pA)>M_PI) uw-=2.0*M_PI;
 		if((A-pA)<-M_PI) uw+=2.0*M_PI;
+		sum+=A+uw;
 	}
 	pA=A;
 
-	sum+=A+uw;
 	n++;
 	if(n>interval*FSINT) {
 		double avg=fmod(180.0/M_PI*sum/n,360.0);
