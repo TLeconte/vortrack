@@ -7,7 +7,7 @@
 #include "vortrack.h"
 
 #define INRATE 5000000
-#define IFFREQ 1918400
+#define IFFREQ (39*FSINT)
 #define DOWNSC (INRATE/FSINT)
 
 extern int verbose;
@@ -53,7 +53,7 @@ int init_airspy(int freq)
 	int result;
 	uint32_t i, count;
 	uint32_t *supported_samplerates;
-	int lg;
+	int Fc;
 
 	result = airspy_open(&device);
 	if (result != AIRSPY_SUCCESS) {
@@ -94,16 +94,14 @@ int init_airspy(int freq)
 		return -1;
 	}
 
-	lg=(gain+540)/37;
-	if(lg>21) lg=21;
-	if(lg<0) lg=0;
-	result = airspy_set_linearity_gain(device, lg);
+	result = airspy_set_linearity_gain(device, gain);
 	if (result != AIRSPY_SUCCESS) {
 		fprintf(stderr, "airspy_set_linearity_gain() failed: %s (%d)\n",
 			airspy_error_name(result), result);
 	}
 
-	result = airspy_set_freq(device, freq + IFFREQ - INRATE/4);
+	Fc=freq + IFFREQ - INRATE/4;
+	result = airspy_set_freq(device, Fc);
 	if (result != AIRSPY_SUCCESS) {
 		fprintf(stderr, "airspy_set_freq() failed: %s (%d)\n",
 			airspy_error_name(result), result);
@@ -113,8 +111,8 @@ int init_airspy(int freq)
 	}
 
 	/* minimum bandwidth */
-	//airspy_r820t_write(device, 10, 0xB0 | 15);
-	//airspy_r820t_write(device, 11, 0xE0 | 8 );
+	airspy_r820t_write(device, 10, 0xB0 | 15);
+	airspy_r820t_write(device, 11, 0xE0 | 8 );
 
         for (i = 0; i < DOWNSC; i++) {
                 Osc[i] =

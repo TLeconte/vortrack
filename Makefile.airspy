@@ -1,6 +1,6 @@
 
-CFLAGS= -g -pthread -D WITH_AIRSPY -I.  `pkg-config --cflags libairspy`
-LIBS= -g -lm -pthread  `pkg-config --libs libairspy` -lusb-1.0 
+CFLAGS= -Ofast -pthread -D WITH_AIRSPY -I.  `pkg-config --cflags libairspy`
+LIBS= -Ofast -lm -pthread  `pkg-config --libs libairspy` -lusb-1.0 
 
 CC=gcc
 

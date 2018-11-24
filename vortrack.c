@@ -15,7 +15,6 @@
 #include "vortrack.h"
 
 int verbose = 0;
-int gain = 1000;
 int interval=2;
 int freq ;
 
@@ -24,10 +23,12 @@ int initRtl(int dev_index, int fr);
 int runRtlSample(void);
 int devid = 0;
 int ppm = 0;
+int gain = 1000;
 #endif
 #ifdef WITH_AIRSPY
 int init_airspy(int freq);
 int runAirspy(void);
+int gain = 18;
 #endif
 
 
@@ -37,21 +38,17 @@ static void usage(void)
 {
 	fprintf(stderr,
 		"vor receiver Copyright (c) 2018 Thierry Leconte \n\n");
-#if WITH_RTL
-	fprintf(stderr,
-		"Usage: vortrack [-g gain] [-l interval ] [-p ppm] [-r device] frequency (in Mhz\n");
-#endif
 #if WITH_AIRSPY
-	fprintf(stderr,
-		"Usage: vortrack [-g gain] [-l interval ] frequency (in Mhz\n");
+	fprintf(stderr, "Usage: vortrack [-g gain] [-l interval ] frequency in MHz\n");
+	fprintf(stderr, " -g gain :\t\t\tlinearity gain [0-21] default 18\n");
 #endif
-	fprintf(stderr, "\n\n");
-	fprintf(stderr, " -g gain :\t\t\tgain in tenth of db (ie : 500 = 50 db)\n");
-	fprintf(stderr, " -l interval :\t\t\ttime between two measurements\n");
 #if WITH_RTL
+	fprintf(stderr, "Usage: vortrack [-g gain] [-l interval ] [-p ppm] [-r device] frequency in MHz\n\n");
+	fprintf(stderr, " -g gain :\t\t\tgain in tenth of db (ie : 500 = 50 db)\n");
 	fprintf(stderr, " -p ppm :\t\t\tppm freq shift\n");
 	fprintf(stderr, " -r n :\t\t\trtl device number\n");
 #endif
+	fprintf(stderr, " -l interval :\t\t\ttime between two measurements\n");
 	exit(1);
 }
 
@@ -60,7 +57,7 @@ int main(int argc, char **argv)
 	int i, c;
 	struct sigaction sigact;
 
-	while ((c = getopt(argc, argv, "vg:l:p:r:")) != EOF) {
+	while ((c = getopt(argc, argv, "vg:l:p:r:h")) != EOF) {
 		switch ((char)c) {
 		case 'v':
 			verbose = 1;
@@ -79,6 +76,7 @@ int main(int argc, char **argv)
 			devid = atoi(optarg);
 			break;
 #endif
+		case 'h':
 		default:
 			usage();
 		}
