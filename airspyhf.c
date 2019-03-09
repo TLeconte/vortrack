@@ -31,7 +31,6 @@ static struct airspyhf_device *device = NULL;
 #define CYCLE_OUTPUT (384)
 #define CYCLE_IO (CYCLE_INPUT * CYCLE_OUTPUT)
 
-static complex float Osc[CYCLE_IO];
 static complex float V = 0;
 static complex float D = 0;
 static complex float D_old = 0;
@@ -76,15 +75,18 @@ static int rx_callback(airspyhf_transfer_t * transfer)
 
 		// linear interpolation
 		for (j = 0; j < CYCLE_INPUT; j++) {
-			Values[idx_input + j] =
+			complex float val =
 				D + ((D - D_old) * j / CYCLE_INPUT);
+			Values[idx_input + j] = val;
 		}
 		idx_input += CYCLE_INPUT;
 		D_old = D;
 
 		if (idx_input == CYCLE_IO) {
 			for (k = 0; k < CYCLE_INPUT; k++) {
-			  vor(cabs(Values[k * CYCLE_OUTPUT]) / (float)DOWNSC);
+			  double input_val;
+			  input_val = cabs(Values[k * CYCLE_OUTPUT]);
+			  vor(input_val / (float)DOWNSC);
 			}
 			idx_input = 0;
 		}
