@@ -45,10 +45,10 @@ static int rx_callback(airspyhf_transfer_t * transfer)
 	float *p = (float *)(transfer->samples);
 
 	for (i = 0; i < transfer->sample_count; i++) {
-	        float re, im;
+		float re, im;
 
 		re = p[i * 2];
-	        im = p[(i * 2) + 1];
+		im = p[(i * 2) + 1];
 
 		// Fs/4 downsampler
 		switch(idx_ds) {
@@ -69,25 +69,25 @@ static int rx_callback(airspyhf_transfer_t * transfer)
 			    idx_ds = 0;
 			    break;
 			default:
-      			// unreachable, error here;
-      			    assert(idx_ds < 4);
-      			    break;
+			// unreachable, error here;
+			    assert(idx_ds < 4);
+			    break;
     		}	
 
 		// linear interpolation
 		for (j = 0; j < CYCLE_INPUT; j++) {
-			Values[idx_input + j] = 
+			Values[idx_input + j] =
 				D + ((D - D_old) * j / CYCLE_INPUT);
 		}
 		idx_input += CYCLE_INPUT;
 		D_old = D;
 
-                if (idx_input == CYCLE_IO) {
+		if (idx_input == CYCLE_IO) {
 			for (k = 0; k < CYCLE_INPUT; k++) {
-		          vor(cabs(Values[k * CYCLE_OUTPUT]) / (float)DOWNSC);
+			  vor(cabs(Values[k * CYCLE_OUTPUT]) / (float)DOWNSC);
 			}
-                        idx_input = 0;
-                }
+			idx_input = 0;
+		}
 
 	}
 
