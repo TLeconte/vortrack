@@ -1,0 +1,18 @@
+
+CFLAGS= -Ofast -pthread -D WITH_AIRSPYHF -I.  `pkg-config --cflags libairspyhf`
+LIBS= -Ofast -lm -pthread  `pkg-config --libs libairspyhf` -lusb-1.0 
+
+CC=gcc
+
+all: vortrack
+
+vortrack: airspyhf.o vor.o vortrack.o
+	$(CC) -o vortrack airspyhf.o vor.o vortrack.o $(LIBS) $(LDFLAGS)
+
+test:	vor.o test.o
+	$(CC) -o test vor.o test.o $(LIBS) $(LDFLAGS)
+
+vortrack.o: vortrack.c vortrack.h
+
+clean:
+	rm -f *.o vortrack
