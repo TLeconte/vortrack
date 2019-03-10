@@ -30,6 +30,10 @@ int init_airspy(int freq);
 int runAirspy(void);
 int gain = 18;
 #endif
+#ifdef WITH_AIRSPYHF
+int init_airspyhf(int freq);
+int runAirspyHF(void);
+#endif
 
 
 static void sighandler(int signum);
@@ -38,7 +42,10 @@ static void usage(void)
 {
 	fprintf(stderr,
 		"vor receiver Copyright (c) 2018 Thierry Leconte \n\n");
-#if WITH_AIRSPY
+#ifdef WITH_AIRSPYHF
+	fprintf(stderr, "Usage: vortrack [-l interval ] frequency in MHz\n");
+#endif
+#ifdef WITH_AIRSPY
 	fprintf(stderr, "Usage: vortrack [-g gain] [-l interval ] frequency in MHz\n");
 	fprintf(stderr, " -g gain :\t\t\tlinearity gain [0-21] default 18\n");
 #endif
@@ -65,9 +72,11 @@ int main(int argc, char **argv)
 		case 'l':
 			interval = atoi(optarg);
 			break;
+#ifdef WITH_AIRSPY
 		case 'g':
 			gain = atoi(optarg);
 			break;
+#endif
 #ifdef WITH_RTL
 		case 'p':
 			ppm = atoi(optarg);
@@ -110,6 +119,12 @@ int main(int argc, char **argv)
 	if (init_airspy(freq))
 		exit(-1);
 	runAirspy();
+#endif
+
+#ifdef WITH_AIRSPYHF
+	if (init_airspyhf(freq))
+		exit(-1);
+	runAirspyHF();
 #endif
 	sighandler(0);
 	exit(0);

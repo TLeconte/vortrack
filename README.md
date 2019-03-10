@@ -20,11 +20,15 @@ git the radial in degree from the VOR.
 
 ## Build
 
-airwav depends of usb lib and rtlsdr or airspy lib
+vortrack depends of usb lib and rtlsdr/airspy/airspyhf lib
 
 For rtl sdr :
 > make -f Makefile.rtl
 
 for airspy :
 > make -f Makefile.airspy
+
+for Airspy HF :
+> make -f Makefile.airspyhf
+
 
