@@ -89,10 +89,17 @@ int initRtl(int dev_index, int fr)
 		return r;
 	}
 
-	rtlsdr_set_tuner_gain_mode(dev, 1);	/* no agc */
-	r = rtlsdr_set_tuner_gain(dev, nearest_gain(gain));
-	if (r < 0)
-		fprintf(stderr, "WARNING: Failed to set gain.\n");
+	if (0 == gain) {
+		fprintf(stderr, "Enabling AGC!\n");
+		rtlsdr_set_tuner_gain_mode(dev, 0);
+	} else {
+		rtlsdr_set_tuner_gain_mode(dev, 1);	/* no agc */
+		int gain_actual = nearest_gain(gain);
+		fprintf(stderr, "Setting gain %f\n", (float)gain_actual/10.0);
+		r = rtlsdr_set_tuner_gain(dev, nearest_gain(gain_actual));
+		if (r < 0)
+			fprintf(stderr, "WARNING: Failed to set gain.\n");
+	}
 
 	if (ppm != 0) {
 		r = rtlsdr_set_freq_correction(dev, ppm);
