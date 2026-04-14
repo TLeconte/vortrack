@@ -4,6 +4,7 @@
 
 extern void vor(float S);
 int interval=1;
+int verbose=0;
 
 static void gen(float rad){
 
